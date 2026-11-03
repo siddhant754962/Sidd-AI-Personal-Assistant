@@ -12,7 +12,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-WEBHOOK_URL = "https://siddpatel.app.n8n.cloud/webhook/b88cc008-6b2b-457e-82fa-d1a4224fa2cb"
+import os
+
+try:
+    WEBHOOK_URL = st.secrets["N8N_WEBHOOK_URL"]
+except Exception:
+    WEBHOOK_URL = os.getenv("N8N_WEBHOOK_URL", "")
+
+if not WEBHOOK_URL:
+    st.error("Please configure your n8n webhook URL.")
+    st.stop()
 
 # ==========================================
 # SESSION STATE
